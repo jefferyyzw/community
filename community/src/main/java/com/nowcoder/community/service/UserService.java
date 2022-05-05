@@ -5,7 +5,7 @@ import com.nowcoder.community.dao.UserMapper;
 import com.nowcoder.community.entity.LoginTicket;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.util.CommunityConstant;
-import com.nowcoder.community.util.Communityutil;
+import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.MailClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,11 +76,11 @@ public class UserService implements CommunityConstant {
             map.put("emailMsg", "该邮箱已经被注册");
         }
 //        注册用户
-        user.setSalt(Communityutil.generateUUID().substring(0,5));
-        user.setPassword(Communityutil.md5(user.getPassword() + user.getSalt()));
+        user.setSalt(CommunityUtil.generateUUID().substring(0,5));
+        user.setPassword(CommunityUtil.md5(user.getPassword() + user.getSalt()));
         user.setType(0);
         user.setStatus(0);
-        user.setActivationCode(Communityutil.generateUUID());
+        user.setActivationCode(CommunityUtil.generateUUID());
         user.setHeaderUrl(String.format("http://images.nowcoder.com/head/%dt.png",new Random().nextInt(1000)));
         user.setCreateTime(new Date());
         userMapper.insertUser(user);
@@ -133,7 +133,7 @@ public class UserService implements CommunityConstant {
             map.put("usernameMsg", "该账号未激活!");
             return map;
         }
-        password = Communityutil.md5(password + user.getSalt());
+        password = CommunityUtil.md5(password + user.getSalt());
         if (!user.getPassword().equals(password)) {
             map.put("passwordMsg", "密码不正确！");
             return map;
@@ -141,7 +141,7 @@ public class UserService implements CommunityConstant {
 //        生成登录凭证
         LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(user.getId());
-        loginTicket.setTicket(Communityutil.generateUUID());
+        loginTicket.setTicket(CommunityUtil.generateUUID());
         loginTicket.setStatus(0);
         loginTicket.setExpired(new Date(System.currentTimeMillis()  + expiredSeconds * 1000));
         loginTicketMapper.insertLoginTicket(loginTicket);
@@ -161,4 +161,11 @@ public class UserService implements CommunityConstant {
         return loginTicketMapper.selectByTicket(ticket);
     }
 
+    public int updateHeader(int userId, String headerUrl) {
+        return userMapper.updateHeader(userId, headerUrl);
+    }
+
+    public User findUserByName(String username) {
+        return userMapper.selectByName(username);
+    }
 }
