@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
  * @version 1.0
  */
 @Mapper
-@Repository
+//@Repository
+@Deprecated  // 声明不推荐使用
 public interface LoginTicketMapper {
     @Insert({
             "insert into login_ticket(user_id,ticket,status,expired) ",
