@@ -175,12 +175,11 @@ public class MessageController implements CommunityConstant {
             messageVo.put("unread", unread);
 
         }
-
         model.addAttribute("commentNotice", messageVo);
 
 
-        // 查询点赞类通知
 
+        // 查询点赞类通知
         message = messageService.findLatestNotice(user.getId(), TOPIC_LIKE);
         messageVo = new HashMap<>();
         if (message != null) {
@@ -200,8 +199,8 @@ public class MessageController implements CommunityConstant {
             messageVo.put("unread", unread);
 
         }
-
         model.addAttribute("likeNotice", messageVo);
+
 
         // 查询关注类通知
         message = messageService.findLatestNotice(user.getId(), TOPIC_FOLLOW);
@@ -212,7 +211,7 @@ public class MessageController implements CommunityConstant {
             String content = HtmlUtils.htmlUnescape(message.getContent());
             Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
 
-            messageVo.put("user", userService.findUserById((Integer) data.get("userId")));
+            messageVo.put("user", userService.findUserById( (Integer)data.get("userId") ));
             messageVo.put("entityType", data.get("entityType"));
             messageVo.put("entityId", data.get("entityId"));
 

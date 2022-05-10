@@ -8,11 +8,11 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 public class CommunityApplication {
 
-	@PostConstruct
+	@PostConstruct   // 构造器以后调用
 	public void init() {
 		// 解决netty启动冲突问题
 		//  来自于 Netty4Utils.setAvailableProcessors()
-		System.setProperty("es.set.netty.runtime.available.properties", "false");
+		System.setProperty("es.set.netty.runtime.available.processors", "false");
 
 	}
 
